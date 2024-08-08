@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 # a script to restart http service
 # to make sure it is running
+# page containing Hello Holberton
 sudo service apache2 restart
