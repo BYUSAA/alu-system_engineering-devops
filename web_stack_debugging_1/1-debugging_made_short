@@ -1,5 +1,5 @@
-#!/bin/bash
- //Nginx likes port 80
-rm /etc/nginx/sites-enabled/default
-ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sudo service nginx restart
+#!/usr/bin/env bash
+#Script that configures 'nginx' to run on port 80
+sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
+service nginx restart
+sudo service nginx stop
