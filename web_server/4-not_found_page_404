@@ -1,35 +1,51 @@
 #!/usr/bin/env bash
-# script that install nginx and configure it to redirect to another page when
-# accessing the /redirect_me page.
+# Script to install Nginx and configure it to:
+# - Redirect when accessing /redirect_me
+# - Serve a custom 404 error page
+
+# Update the package list and install Nginx
 sudo apt update -y
 sudo apt install nginx -y
 
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
-touch /etc/nginx/html/404.html
-echo "Holberton School" > /etc/nginx/html/index.html
-echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
+# Create necessary directories and files
+sudo mkdir -p /var/www/html
+sudo touch /var/www/html/index.html
+sudo touch /var/www/html/404.html
 
-# store configuration content
-new_config=\
-"server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-               root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-        server_name _;
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-        location /redirect_me { 
-            return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-        }
-	error_page 404 /404.html;
-	location /404 {
-	    root /etc/nginx/html;
-	    internal;
-        }
+# Write content to the index and 404 pages
+echo "Holberton School" | sudo tee /var/www/html/index.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Store the new Nginx configuration content
+new_config="
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    
+    root /var/www/html;
+    index index.html index.htm;
+    
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    # Redirect /redirect_me to a different URL
+    location /redirect_me { 
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+
+    # Custom 404 error page
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
 }
 "
-echo "$new_config" > /etc/nginx/sites-available/default
+
+# Write the new configuration to the default Nginx site configuration
+echo "$new_config" | sudo tee /etc/nginx/sites-available/default
+
+# Restart Nginx to apply the changes
 sudo service nginx restart
