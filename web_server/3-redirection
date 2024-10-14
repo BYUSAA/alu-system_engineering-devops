@@ -1,32 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Installs Nginx with the following configurations:
+#+    Listens on port 80.
+#+    Returns a page containing "Holberton School" when queried
+#++    at the root with a curl GET request.
 
-# Install Nginx if not already installed
-apt-get update -y
-apt-get install nginx -y
+sudo apt-get update 
+sudo apt-get install -y nginx 
 
-# Remove the default nginx HTML file
-rm /var/www/html/index.nginx-debian.html
+echo "Holberton School" | sudo tee /var/www/html/index.html
 
-# Create a new HTML file with the required content
-echo "Holberton School for the win!" > /var/www/html/index.html
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;"
 
-# Configure Nginx to listen on port 80 and redirect /redirect_me
-echo "server {
-    listen 80;
-    server_name localhost;
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-available/default
 
-    location / {
-        root /var/www/html;
-        index index.html;
-        try_files \$uri \$uri/ =404;
-    }
-
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-}" > /etc/nginx/sites-available/default
-
-# Restart nginx without using systemctl
-service nginx restart
-
+sudo service nginx restart
 
