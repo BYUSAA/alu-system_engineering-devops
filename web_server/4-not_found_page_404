@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# This script configures a new Ubuntu machine to return a custom 404 page
+# that contains the string "Ceci n'est pas une page."
 
 # Update the package list and install nginx if not already installed
 apt-get update -y
@@ -8,8 +11,7 @@ apt-get install nginx -y
 rm /var/www/html/index.nginx-debian.html
 
 # Create a new HTML file for the custom 404 page
-mv /var/www/html/404.html /var/www/html/404_backup.html # Backup old file if needed
-cp /path/to/your/5-design_a_beautiful_404_page.html /var/www/html/404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 
 # Configure Nginx to listen on port 80 and handle 404 errors
 echo "server {
@@ -27,6 +29,4 @@ echo "server {
 
 # Restart nginx without using systemctl
 service nginx restart
-
-
 
