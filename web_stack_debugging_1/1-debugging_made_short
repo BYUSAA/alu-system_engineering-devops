@@ -1,7 +1,6 @@
-#!/bin/bash
-apt-get update
-apt-get install -y nginx
-service nginx start
-curl -s -I http://localhost
-echo
+#!/usr/bin/env bash
+#Script that configures 'nginx' to run on port 80
+sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
+service nginx restart
+sudo service nginx stop
 
