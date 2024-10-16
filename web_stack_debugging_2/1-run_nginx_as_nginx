@@ -4,3 +4,4 @@ sed -i 's/^user .*/user nginx;/g' /etc/nginx/nginx.conf
 sed -i 's/listen 80 default_server;/listen 8080 default_server;/g' /etc/nginx/sites-available/default
 chown -R nginx:nginx /var/log/nginx /var/www/html
 service nginx restart
+ps aux | grep '[n]ginx'
