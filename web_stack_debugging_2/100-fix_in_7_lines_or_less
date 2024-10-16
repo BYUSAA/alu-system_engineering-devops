@@ -1,8 +1,7 @@
-#!/bin/bash
-# This script configures Nginx to run as the nginx user and listen on port 8080
-sed -i 's/^user .*/user nginx;/g' /etc/nginx/nginx.conf
-sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/sites-available/default
-sed -i 's/listen \[::\]:80;/listen [::]:8080;/g' /etc/nginx/sites-available/default
-chown -R nginx:nginx /var/log/nginx /var/www/html
-service nginx restart
-ps aux | grep '[n]ginx'
+#!/usr/bin/env bash
+# bash script that configures container
+sudo chmod -R 755 /etc/nginx/
+sudo pkill -9 apache2
+sudo sed -i 's/8080/8081/g' /etc/apache2/ports.conf
+su nginx -c "sed -i 's/80/8080/g' /etc/nginx/sites-enabled/default"
+su nginx service nginx restart
