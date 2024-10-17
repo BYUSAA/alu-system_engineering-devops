@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script installs Nginx web server and configures it to serve a specific page
 
 # Update package list and install Nginx
