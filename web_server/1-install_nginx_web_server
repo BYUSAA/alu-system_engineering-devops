@@ -1,31 +1,21 @@
 #!/usr/bin/env bash
 # This script installs the Nginx web server and configures it to serve a page with specific content.
 
-# Update package list and install Nginx
-apt-get update -y
-apt-get install nginx -y
+#We must redefine it in Py3k if it's not already there
+def execfile(file, glob=None, loc=None):
+    if glob is None:
+        import sys
+        glob = sys._getframe().f_back.f_globals
+    if loc is None:
+        loc = glob
 
-# Remove the default Nginx index.html
-rm -f /var/www/html/index.html
+    # It seems that the best way is using tokenize.open(): http://code.activestate.com/lists/python-dev/131251/
+    import tokenize
+    stream = tokenize.open(file)  # @UndefinedVariable
+    try:
+        contents = stream.read()
+    finally:
+        stream.close()
 
-# Create a new index.html file with the required content
-echo "Holberton School for the win!" > /var/www/html/index.html
-
-# Start Nginx service without using systemctl
-service nginx start
-
-# Ensure Nginx is listening on port 80 (check if it's running)
-if ! netstat -tuln | grep -q ':80'; then
-    echo "Nginx is not running on port 80"
-    exit 1
-fi
-
-# This will not work in Ubuntu 16.04 and later
-# Check if Nginx is active
-if ! pgrep -x "nginx" > /dev/null; then
-    echo "Nginx is not running"
-    exit 1
-fi
-
-# Nginx should be configured to start on boot (for Ubuntu versions using init.d)
-update-rc.d nginx defaults
+    #execute the script (note: it's important to compile first to have the filename set in debug mode)
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
