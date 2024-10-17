@@ -1,36 +1,31 @@
 #!/usr/bin/env bash
-# This script installs Nginx web server and configures it to serve a specific page
+# This script installs the Nginx web server and configures it to serve a page with specific content.
 
 # Update package list and install Nginx
 apt-get update -y
 apt-get install nginx -y
 
-# Remove the default Nginx index.html if it exists
-if [ -f /var/www/html/index.html ]; then
-    rm /var/www/html/index.html
-fi
+# Remove the default Nginx index.html
+rm -f /var/www/html/index.html
 
 # Create a new index.html file with the required content
 echo "Holberton School for the win!" > /var/www/html/index.html
 
-# Start Nginx without using systemctl
+# Start Nginx service without using systemctl
 service nginx start
 
-# Check if Nginx is listening on port 80
+# Ensure Nginx is listening on port 80 (check if it's running)
 if ! netstat -tuln | grep -q ':80'; then
-    echo "Nginx is not listening on port 80"
+    echo "Nginx is not running on port 80"
     exit 1
 fi
 
-# Confirm that Nginx is returning the expected page
-HTTP_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" localhost)
-
-if [ "$HTTP_RESPONSE" -ne 200 ]; then
-    echo "Nginx is not returning HTTP 200"
+# This will not work in Ubuntu 16.04 and later
+# Check if Nginx is active
+if ! pgrep -x "nginx" > /dev/null; then
+    echo "Nginx is not running"
     exit 1
 fi
 
-# Allow Nginx to start on boot
+# Nginx should be configured to start on boot (for Ubuntu versions using init.d)
 update-rc.d nginx defaults
-
-echo "Nginx installed and configured successfully."
