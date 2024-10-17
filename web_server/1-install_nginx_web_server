@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
-# This script installs the Nginx web server and configures it to serve a page with specific content.
+# Installs Nginx with the following configurations:
+#    Listens on port 80.
+#    Returns a page containing "Holberton School" when queried
+#    at the root with a curl GET request.
 
-#We must redefine it in Py3k if it's not already there
-def execfile(file, glob=None, loc=None):
-    if glob is None:
-        import sys
-        glob = sys._getframe().f_back.f_globals
-    if loc is None:
-        loc = glob
+# Update package list and install Nginx
+apt-get update -y
+apt-get install nginx -y 
 
-    # It seems that the best way is using tokenize.open(): http://code.activestate.com/lists/python-dev/131251/
-    import tokenize
-    stream = tokenize.open(file)  # @UndefinedVariable
-    try:
-        contents = stream.read()
-    finally:
-        stream.close()
+# Allow Nginx through the firewall
+sudo ufw allow 'Nginx HTTP'
 
-    #execute the script (note: it's important to compile first to have the filename set in debug mode)
-    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+# Create an index.html file with the required content
+echo "Holberton School for the win!" > /var/www/html/index.html
+
+# Restart Nginx service
+service nginx restart
