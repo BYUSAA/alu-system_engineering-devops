@@ -5,15 +5,32 @@
 apt-get update -y
 apt-get install nginx -y
 
-# Remove the default Nginx index.html
-rm /var/www/html/index.html
+# Remove the default Nginx index.html if it exists
+if [ -f /var/www/html/index.html ]; then
+    rm /var/www/html/index.html
+fi
 
 # Create a new index.html file with the required content
 echo "Holberton School for the win!" > /var/www/html/index.html
 
-# Make sure Nginx is running and listening on port 80
+# Start Nginx without using systemctl
 service nginx start
+
+# Check if Nginx is listening on port 80
+if ! netstat -tuln | grep -q ':80'; then
+    echo "Nginx is not listening on port 80"
+    exit 1
+fi
+
+# Confirm that Nginx is returning the expected page
+HTTP_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" localhost)
+
+if [ "$HTTP_RESPONSE" -ne 200 ]; then
+    echo "Nginx is not returning HTTP 200"
+    exit 1
+fi
 
 # Allow Nginx to start on boot
 update-rc.d nginx defaults
 
+echo "Nginx installed and configured successfully."
