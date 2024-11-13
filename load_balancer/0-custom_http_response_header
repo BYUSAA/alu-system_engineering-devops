@@ -20,7 +20,7 @@ echo "server {
 	server_name _;
 	add_header X-Served-By $HOSTNAME;
 	location /redirect_me {
-		return 301 https://www.youtube.com/watch?v=WYvViKLTEcA;
+		return 301 https://www.youtube.com/watch?v=-VGIt10m9VQ;
 	}
 	error_page 404 /5-design_a_beautiful_404_page.html;
 }" > /etc/nginx/sites-available/default
