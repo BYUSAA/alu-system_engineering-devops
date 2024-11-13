@@ -40,7 +40,7 @@ frontend clickviral-tech-frontend
 
 backend clickviral-tech-backend
     balance roundrobin
-    server 6317-web-01 54.234.168.72:80 check
+    server 6317-web-01 54.172.28.130:80 check
     server 6317-web-02 3.90.184.33:80 check
 "
 
