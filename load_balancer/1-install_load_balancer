@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# install load balancer
+# Loadbalancer
 
-
-echo -e "Updating and doing some minor checks...\n"
 
 function install() {
 	command -v "$1" &> /dev/null
@@ -40,8 +38,8 @@ frontend clickviral-tech-frontend
 
 backend clickviral-tech-backend
     balance roundrobin
-    server 6317-web-01 54.172.28.130:80 check
-    server 6317-web-02 54.88.109.255:80 check
+    server 6269-web-01 34.228.159.176:80 check
+    server 6269-web-02 18.234.150.129:80 check
 "
 
 # shellcheck disable=SC2154
